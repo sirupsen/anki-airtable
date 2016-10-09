@@ -20,7 +20,7 @@ is fantastic for this!
 Okay, so you spent the entire afternoon [typing in all the produce that grows
 near you](https://airtable.com/shrvVrHDN6idKdAZN):
 
-![](http://g.recordit.co/fTzu3HjP3l.gif)
+[![](http://g.recordit.co/fTzu3HjP3l.gif)](https://airtable.com/shrvVrHDN6idKdAZN)
 
 This is awesome. You've created some super complicated views in Airtable where
 you filter your recipes by seasonality, so it won't show you asparagus recipes
