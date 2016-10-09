@@ -1,0 +1,14 @@
+{
+  "key": "https://airtable.com/api <-- find here",
+  "media_path": "/Users/username/Documents/Anki/anki_username/collection.media/{}",
+  "tables": [
+    {
+      "anki_deck": "Languages::English",
+      "anki_model": "Word",
+
+      "airtable_table": "Words",
+      "airtable_view": "Learning",
+      "airtable_key": "https://airtable.com/api <-- find here"
+    }
+  ]
+}
