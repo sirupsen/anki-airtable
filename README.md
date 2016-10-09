@@ -5,45 +5,62 @@ the day, Anki is just a flash-card frontend to a database. Why not use Airtable 
 that database? Airtable is much nicer to use as a database, and makes the data
 searchable outside of Anki.
 
-I use this to organize and memorize things like produce that's in season, the
-trees and flowers of Ontario, cheeses from around the world, macronutrients of
-various foods, how to make cocktails and learning new words.
+I use this to organize and memorize things like the trees and flowers of
+Ontario, cheeses from around the world, macronutrients of various foods, how to
+make cocktails and learning new words.
 
-For example, you might have an Airtable like this filled with words you want to
-learn in a "To Learn" view:
+Let's say you're dying to learn when all produce is in season to impress your
+friends and own the local farmer's market. While you're at it, why not learn the
+origin of all these vegetables too? :tomato: :corn :eggplant: :apple:
 
-![](https://cloud.githubusercontent.com/assets/97400/19216935/fe96cb94-8d9e-11e6-9f5d-4987c22f682f.png)
+Having all that information is great. But you really want to have a full
+overview of all produce by season, and not just have it in your head. Airtable
+is fantastic for this!
 
-You fill out the word definition, and the new word migrates to a "Learning"
-view. You add this view to `airtable-anki`:
+Okay, so you spent the entire afternoon typing in all the produce that grows
+near you:
 
+![](https://cloud.githubusercontent.com/assets/97400/19216985/80027fd8-8da0-11e6-9308-8a45bdb063aa.png)
+
+This is awesome. You've created some super complicated views in Airtable where
+you filter your recipes by seasonality, so it won't show you asparagus recipes
+in the winter, or butternut squash in the spring. Sick.
+
+But back to learning this by heart. You want this table in your head.
+Unfortunately, Airtable doesn't have a brain interface and this is [likely not
+happening anytime
+soon](https://en.wikipedia.org/wiki/Superintelligence:_Paths,_Dangers,_Strategies).
+Your best bet to learn this by heart so you can spot the seasonal restaurants
+and impress your local chefs are flash cards. Basically, you want to learn this
+table by heart.
+
+This is where Airtable Anki wins. You install the extension by throwing
+`airtable.py` in your Anki `addon` directory, located in
+`~/Documents/Anki/addons`. Put `settings.json` in that directory as well, and
+configure it to use your glowing new Airtable:
 
 ```json
 {
-  "key": "your api key",
-  "media_path": "/Users/sirup/Documents/Anki/Simon/collection.media/{}",
+  "key": "your api key from api.airtable.com",
+  "media_path": "/Users/YOUR NAME/Documents/Anki/YOUR ANKI NAME/collection.media/{}",
   "tables": [
     {
-      "anki_deck": "English",
-      "anki_model": "Word",
-      "airtable_table": "Words",
-      "airtable_view": "Learning",
-      "airtable_key": "base key"
+      "anki_deck": "NerdCooking",
+      "anki_model": "Produce",
+      "airtable_table": "Produce",
+      "airtable_view": "All",
+      "airtable_key": "base key from api.airtable.com"
     }
   ]
 ```
 
-You open Anki, and voila, you have a flash card with the new word!
+You'll need to create a new "Produce" model in Anki first. The extension
+*should* automatically create the fields, but it's not smart enough to create
+models yet (you should add that).
 
-![](https://cloud.githubusercontent.com/assets/97400/19216946/532d21da-8d9f-11e6-92b5-18f43b6ad762.gif)
+Finally, open Anki, and you'll see some brand new cards.
 
-## Installation
-
-Place the `airtable.py` file in `~/Documents/Anki/addons` or wherever Anki is
-installed.
-
-Then put `settings.example.json` in `~/Documents/Anki/addons/settings.json` and
-configure everything.
+![](https://cloud.githubusercontent.com/assets/97400/19217043/ba883ae2-8da2-11e6-9faf-02b856fb5c58.gif)
 
 ## Bugs
 
