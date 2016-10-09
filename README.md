@@ -17,8 +17,8 @@ Having all that information is great. But you really want to have a full
 overview of all produce by season, and not just have it in your head. Airtable
 is fantastic for this!
 
-Okay, so you spent the entire afternoon typing in all the produce that grows
-near you:
+Okay, so you spent the entire afternoon [typing in all the produce that grows
+near you](https://airtable.com/shrvVrHDN6idKdAZN):
 
 ![](http://g.recordit.co/fTzu3HjP3l.gif)
 
