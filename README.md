@@ -11,7 +11,7 @@ make cocktails and learning new words.
 
 Let's say you're dying to learn when all produce is in season to impress your
 friends and own the local farmer's market. While you're at it, why not learn the
-origin of all these vegetables too? :tomato: :corn :eggplant: :apple:
+origin of all these vegetables too? :tomato: :corn: :eggplant: :apple:
 
 Having all that information is great. But you really want to have a full
 overview of all produce by season, and not just have it in your head. Airtable
