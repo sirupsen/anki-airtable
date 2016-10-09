@@ -20,7 +20,7 @@ is fantastic for this!
 Okay, so you spent the entire afternoon typing in all the produce that grows
 near you:
 
-![](https://cloud.githubusercontent.com/assets/97400/19216985/80027fd8-8da0-11e6-9308-8a45bdb063aa.png)
+![](http://g.recordit.co/fTzu3HjP3l.gif)
 
 This is awesome. You've created some super complicated views in Airtable where
 you filter your recipes by seasonality, so it won't show you asparagus recipes
@@ -34,10 +34,20 @@ Your best bet to learn this by heart so you can spot the seasonal restaurants
 and impress your local chefs are flash cards. Basically, you want to learn this
 table by heart.
 
-This is where Airtable Anki wins. You install the extension by throwing
+This is where Airtable Anki wins. You **install the extension** by throwing
 `airtable.py` in your Anki `addon` directory, located in
-`~/Documents/Anki/addons`. Put `settings.json` in that directory as well, and
-configure it to use your glowing new Airtable:
+`~/Documents/Anki/addons`. Put `settings.json` in that directory as well. A
+quick command that'll work for most (you may have to adjust the username, but
+default is `User 1`):
+
+```bash
+curl https://raw.githubusercontent.com/Sirupsen/anki-airtable/master/airtable.py \
+  -o ~/Documents/Anki/User\ 1/addons/airtable.py
+curl https://raw.githubusercontent.com/Sirupsen/anki-airtable/master/settings.example.json \
+  -o ~/Documents/Anki/User\ 1/addons/settings.json
+```
+
+Then open `settings.json` with an editor and configure it:
 
 ```json
 {
@@ -54,13 +64,14 @@ configure it to use your glowing new Airtable:
   ]
 ```
 
-You'll need to create a new "Produce" model in Anki first. The extension
-*should* automatically create the fields, but it's not smart enough to create
-models yet (you should add that).
+For this example, you'll need to create a new "Produce" model in Anki first. The
+extension *should* automatically create the fields, but it's not smart enough to
+create models yet (you should add that).
 
 Finally, open Anki, and you'll see some brand new cards.
 
-![](https://cloud.githubusercontent.com/assets/97400/19217043/ba883ae2-8da2-11e6-9faf-02b856fb5c58.gif)
+![](http://g.recordit.co/o4srVtFVRD.gif)
+![](http://g.recordit.co/hJQa8Hlqu3.gif)
 
 ## Bugs
 
