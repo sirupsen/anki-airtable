@@ -64,11 +64,13 @@ Then open `settings.json` with an editor and configure it:
   ]
 ```
 
-This extension will automatically create a "Produce" model, but there will be no
-cards. You'll need to open up the new model and add cards to your liking. The
-order of the fields in the model may not be right, so you'll have to move the
-primary column to the top as well as this is the one that Anki uses as the
-identifier.
+This extension will automatically create a "Produce" model if it doesn't exist,
+but there will be no cards. You can also create the model yourself beforehand
+with all the fields you'd like to include from the Airtable records. 
+
+Note that Anki will NOT import Airtable records that don't generate any cards,
+so you'll have to restart Anki after creating cards for your new model, whether
+or not it was created manually or with Airtable Anki.
 
 Once you've created some cards for the new model, you'll see some brand new cards:
 
