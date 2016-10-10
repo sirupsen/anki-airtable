@@ -64,11 +64,13 @@ Then open `settings.json` with an editor and configure it:
   ]
 ```
 
-For this example, you'll need to create a new "Produce" model in Anki first. The
-extension *should* automatically create the fields, but it's not smart enough to
-create models yet (you should add that).
+This extension will automatically create a "Produce" model, but there will be no
+cards. You'll need to open up the new model and add cards to your liking. The
+order of the fields in the model may not be right, so you'll have to move the
+primary column to the top as well as this is the one that Anki uses as the
+identifier.
 
-Finally, open Anki, and you'll see some brand new cards.
+Once you've created some cards for the new model, you'll see some brand new cards:
 
 ![](http://g.recordit.co/o4srVtFVRD.gif)
 ![](http://g.recordit.co/hJQa8Hlqu3.gif)

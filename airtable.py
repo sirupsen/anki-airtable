@@ -132,11 +132,19 @@ class AirtableImporter(NoteImporter):
 
         return field
 
-def airtableImport(col, deck, model, table, view, app_key):
+def airtableImport(col, deck, modelName, table, view, app_key):
     did = mw.col.decks.id(deck)
     mw.col.decks.select(did)
 
-    model = mw.col.models.byName(model)
+    model = mw.col.models.byName(modelName)
+
+    if not model:
+        model = mw.col.models.new(modelName)
+        mw.col.models.add(model)
+
+        template = mw.col.models.newTemplate("Default")
+        mw.col.models.addTemplate(model, template)
+
     model['did'] = did
 
     deck = mw.col.decks.get(did)
