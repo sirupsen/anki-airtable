@@ -99,8 +99,14 @@ class AirtableImporter(NoteImporter):
             conn.request("GET", "/v0/{}/{}?view={}".format(self.app_key, self.table, self.view), "", headers)
 
             response = conn.getresponse()
-            json_response = response.read()
-            self.records = json.loads(json_response)["records"]
+            raw_response = response.read()
+            json_response = json.loads(raw_response)
+
+            if "error" in json_response:
+                sys.stderr.write(raw_response)
+            else:
+                self.records = json_response["records"]
+
             return self.records
 
     def downloadToCollection(self, media):
