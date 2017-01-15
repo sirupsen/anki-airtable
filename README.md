@@ -42,9 +42,9 @@ default is `User 1`):
 
 ```bash
 curl https://raw.githubusercontent.com/Sirupsen/anki-airtable/master/airtable.py \
-  -o ~/Documents/Anki/User\ 1/addons/airtable.py
+  -o ~/Library/Application\ Support/Anki/User\ 1/addons/airtable.py
 curl https://raw.githubusercontent.com/Sirupsen/anki-airtable/master/settings.example.json \
-  -o ~/Documents/Anki/User\ 1/addons/settings.json
+  -o ~/Library/Application\ Support/Anki/User\ 1/addons/settings.json
 ```
 
 Then open `settings.json` with an editor and configure it:
@@ -52,7 +52,7 @@ Then open `settings.json` with an editor and configure it:
 ```json
 {
   "key": "your api key from api.airtable.com",
-  "media_path": "/Users/YOUR NAME/Documents/Anki/YOUR ANKI NAME/collection.media/{}",
+  "media_path": "/Users/your_username/Library/Application Support/Anki2/User 1/collection.media/{}",
   "tables": [
     {
       "anki_deck": "NerdCooking",

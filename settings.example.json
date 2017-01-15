@@ -1,6 +1,6 @@
 {
   "key": "https://airtable.com/api <-- find here",
-  "media_path": "/Users/username/Documents/Anki/anki_username/collection.media/{}",
+  "media_path": "/Users/your_username/Library/Application Support/Anki2/User 1/collection.media/{}",
   "tables": [
     {
       "anki_deck": "Languages::English",
