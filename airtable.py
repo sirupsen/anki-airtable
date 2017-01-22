@@ -124,7 +124,7 @@ class AirtableImporter(NoteImporter):
 
             location = unicode(Settings["media_path"]).format(filename)
 
-            command = u"curl {} -o {}".format(url, location)
+            command = u"curl {} -o '{}'".format(url, location)
 
             if not os.path.isfile(location):
                 return_code = subprocess.call(command, shell=True)
