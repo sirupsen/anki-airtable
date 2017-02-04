@@ -81,8 +81,8 @@ Once you've created some cards for the new model, you'll see some brand new card
 
 There's bound to be many.. this doesn't use any proper Airtable client for
 Python because dependencies are hard in Anki and I don't know anything about
-Anki. To my knowledge no-one but me is using this. If you use it or have trouble
-getting it running, let me know!
+Python. To my knowledge no-one but me is using this. If you use it or have
+trouble getting it running, let me know in an issue!
 
 ## License
 
