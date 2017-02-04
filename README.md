@@ -1,9 +1,9 @@
 # Anki Airtable
 
-This is an Anki plugin that can synchronize an Airtable to Anki. At the end of
-the day, Anki is just a flash-card frontend to a database. Why not use Airtable as
-that database? Airtable is much nicer to use as a database, and makes the data
-searchable outside of Anki.
+This is an Anki plugin that can synchronize an Airtable to Anki when Anki starts
+up. At the end of the day, Anki is just a flash-card frontend to a database. Why
+not use Airtable as that database? Airtable is much nicer to use as a database,
+and makes the data searchable outside of Anki.
 
 I use this to organize and memorize things like the trees and flowers of
 Ontario, cheeses from around the world, macronutrients of various foods, how to
