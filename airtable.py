@@ -129,7 +129,7 @@ class AirtableImporter(NoteImporter):
             if not os.path.isfile(location):
                 return_code = subprocess.call(command, shell=True)
 
-            if extension == ".jpg" or extension == ".png":
+            if extension == ".jpg" or extension == ".png" or extension == ".jpeg":
                 field += u"<img src=\"{}\" />".format(filename)
             elif extension == ".ogg" or extension == ".mp3":
                 field += u"[sound:{}]".format(filename)
