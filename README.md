@@ -64,13 +64,12 @@ Then open `settings.json` with an editor and configure it:
   ]
 ```
 
-This extension will automatically create a "Produce" model if it doesn't exist,
-but there will be no cards. You can also create the model yourself beforehand
-with all the fields you'd like to include from the Airtable records. 
+**This is very important, please make sure you understand this section.**
 
-Note that Anki will NOT import Airtable records that don't generate any cards,
-so you'll have to restart Anki after creating cards for your new model, whether
-or not it was created manually or with Airtable Anki.
+You will need to manually create the `Produce` model if it doesn't exist. You
+will ALSO need to create cards for the model because `anki-airtable` will NOT
+import records that don't generate any cards. So: (1) create the model, (2)
+create cards, (3) restart Anki with this plugin.
 
 Once you've created some cards for the new model, you'll see some brand new cards:
 
