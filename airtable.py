@@ -120,7 +120,7 @@ class AirtableImporter(NoteImporter):
 
             _, extension = os.path.splitext(url)
             digest = md5.new(url).hexdigest()
-            filename = u"{}.{}".format(digest, extension)
+            filename = u"{}{}".format(digest, extension)
 
             location = unicode(Settings["media_path"]).format(filename)
 
