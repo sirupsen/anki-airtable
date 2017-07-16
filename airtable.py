@@ -119,31 +119,38 @@ class AirtableImporter(NoteImporter):
         else:
             self.records = []
 
-            json_response = self.sendAirtableRequest("/v0/{}/{}?view={}".format(self.app_key, self.table, self.view))
+            offset = 0
+            while True:
+                json_response = self.sendAirtableRequest("/v0/{}/{}?view={}&offset={}".format(self.app_key, self.table, self.view, offset))
 
-            if json_response:
-                for linked_record in self.linked_record_fields:
-                    field = linked_record["field"]
-                    table = linked_record["table"]
-                    primary_field = linked_record["primary_field"]
+                if json_response:
+                    for linked_record in self.linked_record_fields:
+                        field = linked_record["field"]
+                        table = linked_record["table"]
+                        primary_field = linked_record["primary_field"]
 
-                    for record in json_response["records"]:
-                        # Sometimes a value hasn't been filled in for this field.
-                        if field not in record["fields"]:
-                            continue
+                        for record in json_response["records"]:
+                            # Sometimes a value hasn't been filled in for this field.
+                            if field not in record["fields"]:
+                                continue
 
-                        linked_record_ids = record["fields"].get(field, None)
+                            linked_record_ids = record["fields"].get(field, None)
 
-                        # Sometimes a linked record is a string, but it can be
-                        # a list if linking to multiple records is allowed.  To
-                        # keep the code simple, let's always make it a list.
-                        if not isinstance(linked_record_ids, list):
-                            linked_record_ids = [linked_record_ids]
+                            # Sometimes a linked record is a string, but it can be
+                            # a list if linking to multiple records is allowed.  To
+                            # keep the code simple, let's always make it a list.
+                            if not isinstance(linked_record_ids, list):
+                                linked_record_ids = [linked_record_ids]
 
-                        linked_records = [self.fetchLinkedRecord(table, rid, primary_field) for rid in linked_record_ids]
-                        record["fields"][field] = linked_records
+                            linked_records = [self.fetchLinkedRecord(table, rid, primary_field) for rid in linked_record_ids]
+                            record["fields"][field] = linked_records
 
-                self.records = json_response["records"]
+                    self.records.extend(json_response["records"])
+
+                    if "offset" in json_response:
+                        offset = json_response["offset"]
+                    else:
+                        break
 
             return self.records
 
