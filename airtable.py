@@ -22,13 +22,14 @@ class AirtableImporter(NoteImporter):
     importMode = 0
     allowHTML = True
 
-    def __init__(self, col, table, view, api_key, app_key):
+    def __init__(self, col, table, view, api_key, app_key, linked_record_fields):
         NoteImporter.__init__(self, col, "")
         self.records = None
         self.table = table
         self.view = view
         self.api_key = api_key
         self.app_key = app_key
+        self.linked_record_fields = linked_record_fields
 
     def outputLog(self):
         for statement in self.log:
@@ -89,22 +90,59 @@ class AirtableImporter(NoteImporter):
 
         return notes
 
+    def sendAirtableRequest(self, url):
+        headers = { "Authorization": "Bearer " + self.api_key }
+
+        conn = httplib.HTTPSConnection("api.airtable.com")
+        conn.request("GET", url, "", headers)
+
+        response = conn.getresponse()
+        raw_response = response.read()
+        json_response = json.loads(raw_response)
+
+        if "error" in json_response:
+            sys.stderr.write(raw_response)
+            return None
+
+        return json_response
+
+    def fetchRecord(self, table, record_id):
+        return self.sendAirtableRequest("/v0/{}/{}/{}".format(self.app_key, table, record_id))
+
+    def fetchLinkedRecord(self, table, record_id, primary_field):
+        record = self.fetchRecord(table, record_id)
+        return record["fields"][primary_field]
+
     def getRecords(self):
         if self.records:
             return self.records
         else:
-            headers = { "Authorization": "Bearer " + self.api_key }
+            self.records = []
 
-            conn = httplib.HTTPSConnection("api.airtable.com")
-            conn.request("GET", "/v0/{}/{}?view={}".format(self.app_key, self.table, self.view), "", headers)
+            json_response = self.sendAirtableRequest("/v0/{}/{}?view={}".format(self.app_key, self.table, self.view))
 
-            response = conn.getresponse()
-            raw_response = response.read()
-            json_response = json.loads(raw_response)
+            if json_response:
+                for linked_record in self.linked_record_fields:
+                    field = linked_record["field"]
+                    table = linked_record["table"]
+                    primary_field = linked_record["primary_field"]
 
-            if "error" in json_response:
-                sys.stderr.write(raw_response)
-            else:
+                    for record in json_response["records"]:
+                        # Sometimes a value hasn't been filled in for this field.
+                        if field not in record["fields"]:
+                            continue
+
+                        linked_record_ids = record["fields"].get(field, None)
+
+                        # Sometimes a linked record is a string, but it can be
+                        # a list if linking to multiple records is allowed.  To
+                        # keep the code simple, let's always make it a list.
+                        if not isinstance(linked_record_ids, list):
+                            linked_record_ids = [linked_record_ids]
+
+                        linked_records = [self.fetchLinkedRecord(table, rid, primary_field) for rid in linked_record_ids]
+                        record["fields"][field] = linked_records
+
                 self.records = json_response["records"]
 
             return self.records
@@ -138,7 +176,7 @@ class AirtableImporter(NoteImporter):
 
         return field
 
-def airtableImport(col, deck, modelName, table, view, app_key):
+def airtableImport(col, deck, modelName, table, view, app_key, linked_record_fields=[]):
     did = mw.col.decks.id(deck)
     mw.col.decks.select(did)
 
@@ -157,7 +195,7 @@ def airtableImport(col, deck, modelName, table, view, app_key):
     deck['mid'] = model['id']
     mw.col.decks.save(deck)
 
-    airtable = AirtableImporter(mw.col, table, view, Settings["key"], app_key)
+    airtable = AirtableImporter(mw.col, table, view, Settings["key"], app_key, linked_record_fields)
     airtable.updateModel(model)
     airtable.initMapping()
     airtable.run()
@@ -169,6 +207,6 @@ def airtableImport(col, deck, modelName, table, view, app_key):
 # TODO: Automatic cloze cards for English words.
 def hook():
     for table in Settings["tables"]:
-        airtableImport(mw.col, table["anki_deck"], table["anki_model"], table["airtable_table"], table["airtable_view"], table["airtable_key"])
+        airtableImport(mw.col, table["anki_deck"], table["anki_model"], table["airtable_table"], table["airtable_view"], table["airtable_key"], table.get("airtable_linked_record_fields", []))
 
 addHook("profileLoaded", hook)
