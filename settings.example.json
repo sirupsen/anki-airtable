@@ -8,6 +8,13 @@
 
       "airtable_table": "Words",
       "airtable_view": "Learning",
+      "airtable_linked_record_fields": [
+        {
+          "field": "Origin",
+          "table": "Languages of Origin",
+          "primary_field": "Language"
+        }
+      ]
       "airtable_key": "https://airtable.com/api <-- find here"
     }
   ]
