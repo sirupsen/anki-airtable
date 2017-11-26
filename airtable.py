@@ -93,21 +93,32 @@ class AirtableImporter(NoteImporter):
         if self.records:
             return self.records
         else:
-            headers = { "Authorization": "Bearer " + self.api_key }
-
-            conn = httplib.HTTPSConnection("api.airtable.com")
-            conn.request("GET", "/v0/{}/{}?view={}".format(self.app_key, self.table, self.view), "", headers)
-
-            response = conn.getresponse()
-            raw_response = response.read()
-            json_response = json.loads(raw_response)
-
-            if "error" in json_response:
-                sys.stderr.write(raw_response)
-            else:
-                self.records = json_response["records"]
-
+            self.records = self.getRecordsWithOffset(None)
             return self.records
+
+    def getRecordsWithOffset(self, offset = None):
+        headers = { "Authorization": "Bearer " + self.api_key }
+
+        offsetString = ""
+        if offset is not None:
+            offsetString = "&offset={}".format(offset)
+
+        conn = httplib.HTTPSConnection("api.airtable.com")
+        conn.request("GET", "/v0/{}/{}?view={}{}".format(self.app_key, self.table, self.view, offsetString), "", headers)
+
+        response = conn.getresponse()
+        raw_response = response.read()
+        json_response = json.loads(raw_response)
+
+        if "error" in json_response:
+            sys.stderr.write(raw_response)
+
+        records = json_response["records"]
+
+        if "offset" in json_response:
+            records += self.getRecordsWithOffset(json_response["offset"])
+
+        return records
 
     def downloadToCollection(self, media):
         field = ""
