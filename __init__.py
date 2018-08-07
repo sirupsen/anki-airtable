@@ -3,20 +3,15 @@ from aqt.utils import showInfo
 from aqt.qt import *
 from anki.hooks import addHook
 from anki.importing.noteimp import NoteImporter, ForeignNote
-import httplib, urllib
-from urlparse import urlparse
-import md5
+import http.client, urllib.request, urllib.parse, urllib.error
+from urllib.parse import urlparse
+import hashlib
 import ssl
 import json
 import pprint
 import subprocess
-import httplib2
 
-Settings = {}
-
-dir_path = os.path.dirname(os.path.realpath(__file__))
-with open(dir_path + "/settings.json") as settings:
-    Settings = json.load(settings)
+Config = mw.addonManager.getConfig(__name__)
 
 class AirtableImporter(NoteImporter):
     importMode = 0
@@ -42,7 +37,7 @@ class AirtableImporter(NoteImporter):
         fieldNames = models.fieldNames(model)
 
         for record in self.getRecords():
-            for key in record["fields"].keys():
+            for key in list(record["fields"].keys()):
                 if key not in fieldNames:
                     field = models.newField(key)
                     models.addField(model, field)
@@ -73,16 +68,17 @@ class AirtableImporter(NoteImporter):
                             note.fields.append(self.downloadToCollection(fields[key]))
                         else:
                             strings = [str(e) for e in fields[key]]
-                            note.fields.append(", ".join(strings))
+                            note.fields.append(str(", ".join(strings)))
                     else:
-                        if not isinstance(fields[key], str) and not isinstance(fields[key], unicode):
-                            fields[key] = unicode(fields[key])
+                        if not isinstance(fields[key], str) and not isinstance(fields[key], str):
+                            fields[key] = str(fields[key])
 
                         asciiToHtml = fields[key].replace("\n", "<br/>")
                         note.fields.append(asciiToHtml)
                 else:
                     note.fields.append("")
 
+                # This has some encoding problems.
                 # sys.stderr.write(key + " => " + note.fields[len(note.fields) - 1] + "\n")
 
             notes.append(note)
@@ -97,13 +93,12 @@ class AirtableImporter(NoteImporter):
             return self.records
 
     def getRecordsWithOffset(self, offset = None):
-        headers = { "Authorization": "Bearer " + self.api_key }
-
         offsetString = ""
         if offset is not None:
             offsetString = "&offset={}".format(offset)
 
-        conn = httplib.HTTPSConnection("api.airtable.com")
+        headers = { "Authorization": "Bearer " + self.api_key }
+        conn = http.client.HTTPSConnection("api.airtable.com", context = ssl._create_unverified_context())
         conn.request("GET", "/v0/{}/{}?view={}{}".format(self.app_key, self.table, self.view, offsetString), "", headers)
 
         response = conn.getresponse()
@@ -130,20 +125,20 @@ class AirtableImporter(NoteImporter):
                 url = medium["thumbnails"]["large"]["url"]
 
             _, extension = os.path.splitext(url)
-            digest = md5.new(url).hexdigest()
-            filename = u"{}{}".format(digest, extension)
+            digest = hashlib.md5(url.encode('utf-8')).hexdigest()
+            filename = "{}{}".format(digest, extension)
 
-            location = unicode(Settings["media_path"]).format(filename)
+            location = str(Config["media_path"]).format(filename)
 
-            command = u"curl {} -o '{}'".format(url, location)
+            command = "curl {} -o '{}'".format(url, location)
 
             if not os.path.isfile(location):
                 return_code = subprocess.call(command, shell=True)
 
             if extension == ".jpg" or extension == ".png" or extension == ".jpeg":
-                field += u"<img src=\"{}\" />".format(filename)
+                field += "<img src=\"{}\" />".format(filename)
             elif extension == ".ogg" or extension == ".mp3":
-                field += u"[sound:{}]".format(filename)
+                field += "[sound:{}]".format(filename)
             else:
                 field += filename
 
@@ -168,7 +163,7 @@ def airtableImport(col, deck, modelName, table, view, app_key):
     deck['mid'] = model['id']
     mw.col.decks.save(deck)
 
-    airtable = AirtableImporter(mw.col, table, view, Settings["key"], app_key)
+    airtable = AirtableImporter(mw.col, table, view, Config["key"], app_key)
     airtable.updateModel(model)
     airtable.initMapping()
     airtable.run()
@@ -179,7 +174,7 @@ def airtableImport(col, deck, modelName, table, view, app_key):
 #
 # TODO: Automatic cloze cards for English words.
 def hook():
-    for table in Settings["tables"]:
+    for table in Config["tables"]:
         airtableImport(mw.col, table["anki_deck"], table["anki_model"], table["airtable_table"], table["airtable_view"], table["airtable_key"])
 
 addHook("profileLoaded", hook)
