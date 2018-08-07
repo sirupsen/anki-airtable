@@ -36,35 +36,15 @@ Your best bet to learn this by heart so you can spot the seasonal restaurants
 and impress your local chefs are flash cards. Basically, you want to learn this
 table by heart.
 
-This is where Airtable Anki wins. You **install the extension** by throwing
-`airtable.py` in your Anki `addon` directory, located in
-`~/Documents/Anki/addons`. Put `settings.json` in that directory as well. A
-quick command that'll work for most (you may have to adjust the username, but
-default is `User 1`):
+This is where Airtable Anki wins. 
 
-```bash
-curl https://raw.githubusercontent.com/Sirupsen/anki-airtable/master/airtable.py \
-  -o ~/Library/Application\ Support/Anki/User\ 1/addons/airtable.py
-curl https://raw.githubusercontent.com/Sirupsen/anki-airtable/master/settings.example.json \
-  -o ~/Library/Application\ Support/Anki/User\ 1/addons/settings.json
-```
+Install by importing extension `1573217784`:
 
-Then open `settings.json` with an editor and configure it:
+![](https://user-images.githubusercontent.com/97400/43768257-38da0a54-9a37-11e8-855d-4000e326c0ad.png)
 
-```json
-{
-  "key": "your api key from api.airtable.com",
-  "media_path": "/Users/your_username/Library/Application Support/Anki2/User 1/collection.media/{}",
-  "tables": [
-    {
-      "anki_deck": "NerdCooking",
-      "anki_model": "Produce",
-      "airtable_table": "Produce",
-      "airtable_view": "All",
-      "airtable_key": "base key from api.airtable.com"
-    }
-  ]
-```
+Then highlight the plugin and click `Config`, and change the configuration file:
+
+![](https://user-images.githubusercontent.com/97400/43768310-5b3883e6-9a37-11e8-8028-320ea356d464.png)
 
 **This is very important, please make sure you understand this section.**
 

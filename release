@@ -1,0 +1,12 @@
+# /usr/local/bin/bash
+mkdir ./airtable
+cp ./__init__.py airtable/
+cp config.example.json airtable/config.json
+cp README.md airtable/config.md
+zip -rjD airtable.zip airtable/*
+mv airtable.zip ~/Downloads
+rm -rf ./airtable
+jq --slurp --raw-input '{"text": "\(.)", "mode": "markdown"}' < README.md | curl --data @- https://api.github.com/markdown | pbcopy
+
+echo -e "\e[31mairtable.zip is in ~/Downloads"
+echo -e "README description is in your clipboard.\e[0m"
