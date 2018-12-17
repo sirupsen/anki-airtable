@@ -135,8 +135,16 @@ class AirtableImporter(NoteImporter):
             if not os.path.isfile(location):
                 return_code = subprocess.call(command, shell=True)
 
+            if not extension or extension == "":
+                find_extension = "file --extension \"{}\" | grep -oE \":.+$\" | grep -oE \"[^\/ :]+\" | head -n1".format(location)
+                mime_ext = subprocess.check_output(find_extension, shell=True)
+                extension = ".{}".format(mime_ext.decode("utf-8").strip())
+                link = "ln -s \"{}\" \"{}{}\"".format(location, location, extension)
+                subprocess.call(link, shell=True)
+                filename = "{}{}".format(digest, extension)
+
             if extension == ".jpg" or extension == ".png" or extension == ".jpeg":
-                field += "<img src=\"{}\" />".format(filename)
+                field += "<img src=\"{}\" /> ".format(filename)
             elif extension == ".ogg" or extension == ".mp3":
                 field += "[sound:{}]".format(filename)
             else:
