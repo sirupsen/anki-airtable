@@ -48,9 +48,8 @@ Then highlight the plugin and click `Config`, and change the configuration file:
 
 **This is very important, please make sure you understand this section.**
 
-You will need to manually create the `Produce` model if it doesn't exist. You
-will ALSO need to create cards for the model because `anki-airtable` will NOT
-import records that don't generate any cards. So: (1) create the model, (2)
+You will need to manually create the `Produce` [model](https://docs.ankiweb.net/#/getting-started?id=note-types) if it doesn't exist. You will ALSO need to [create cards](https://docs.ankiweb.net/#/getting-started?id=card-types) 
+for the model because `anki-airtable` will NOT import records that don't generate any cards. So: (1) create the model, (2)
 create cards, (3) restart Anki with this plugin.
 
 Once you've created some cards for the new model, you'll see some brand new cards:
