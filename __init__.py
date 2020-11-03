@@ -113,7 +113,7 @@ class AirtableImporter(NoteImporter):
         if "offset" in json_response:
             records += self.getRecordsWithOffset(json_response["offset"])
 
-        return records
+        return [r for r in records if r.get('fields', {}).get('Status') == 'Complete']
 
     def downloadToCollection(self, media):
         field = ""
