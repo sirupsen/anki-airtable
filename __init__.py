@@ -113,7 +113,7 @@ class AirtableImporter(NoteImporter):
         if "offset" in json_response:
             records += self.getRecordsWithOffset(json_response["offset"])
 
-        return records
+        return [r for r in records if r.get('fields', {}).get('Status') == 'Complete']
 
     def downloadToCollection(self, media):
         field = ""
@@ -166,6 +166,7 @@ def airtableImport(col, deck, modelName, table, view, app_key):
         mw.col.models.addTemplate(model, template)
 
     model['did'] = did
+    mw.col.models.save(model)
 
     deck = mw.col.decks.get(did)
     deck['mid'] = model['id']
