@@ -166,6 +166,7 @@ def airtableImport(col, deck, modelName, table, view, app_key):
         mw.col.models.addTemplate(model, template)
 
     model['did'] = did
+    mw.col.models.save(model)
 
     deck = mw.col.decks.get(did)
     deck['mid'] = model['id']
